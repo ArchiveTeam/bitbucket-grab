@@ -54,7 +54,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20200619.01'
+VERSION = '20200619.02'
 USER_AGENT = 'Archive Team'
 TRACKER_ID = 'bitbucket'
 TRACKER_HOST = 'trackerproxy.meo.ws'
@@ -234,9 +234,9 @@ class WgetArgs(object):
         item['item_type'] = item_type
         item['item_value'] = item_value
 
-        if item_type == 'repo':
-            wget_args.append('https://bitbucket.org/' + item_value)
+        if item_type == 'hg':
             wget_args.append('https://bitbucket.org/' + item_value + '/src/')
+            wget_args.append('https://bitbucket.org/' + item_value)
             wget_args.append('https://bitbucket.org/' + item_value + '/src/default/')
             wget_args.append('https://bitbucket.org/!api/2.0/repositories/' + item_value)
         else:

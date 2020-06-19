@@ -67,12 +67,19 @@ allowed = function(url, parenturl)
       or string.match(url, "/[^/]+/[^/]+/src/[0-9a-zA-Z]+")
       or string.match(url, "/[^/]+/[^/]+/branches/merge/")
       or string.match(url, "/[^/]+/[^/]+/compare/")
+      or string.match(url, "/[^/]+/[^/]+/pull%-requests/[0-9]+.*/commits$")
+      or string.match(url, "/[^/]+/[^/]+/pull%-requests/[0-9]+.*/diff$")
       or string.match(url, "/[^/]+/[^/]+/issues%?.*sort=")
+      or string.match(url, "/[^/]+/[^/]+/issues%?.*component=")
+      or string.match(url, "/[^/]+/[^/]+/issues%?.*milestone=")
+      or string.match(url, "/[^/]+/[^/]+/issues%?.*version=")
+      or string.match(url, "/[^/]+/[^/]+/issues%?.*priority=")
+      or string.match(url, "/[^/]+/[^/]+/issues%?.*kind=")
       or string.match(url, "/[^/]+/[^/]+/issues%?.*responsible=")
       or string.match(url, "/[^/]+/[^/]+/downloads/%?tab=branches$")
       or string.match(url, "^https?://bitbucket%-connect%-icons%.s3%.amazonaws%.com/add%-on/icons/")
       or string.match(url, "^https?://[^/]*bitbucket%.org/account/signin/")
-      and not (
+      or not (
         string.match(url, "^https?://[^/]*bitbucket%.org/")
         or string.match(url, "^https?://[^/]*bytebucket%.org/")
         or string.match(url, "^https?://[^/]*amazonaws%.com/")
@@ -104,8 +111,12 @@ allowed = function(url, parenturl)
     return true
   end
 
-  if string.find(url, item_value_escaped) then
-    return true
+  local prev = nil
+  for s in string.gmatch(url, "([0-9a-zA-Z%-%._]+)") do
+    if prev ~= nil and prev .. "/" .. s == item_value then
+      return true
+    end
+    prev = s
   end
 
   return false
