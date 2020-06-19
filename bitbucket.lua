@@ -61,13 +61,22 @@ allowed = function(url, parenturl)
       or string.match(url, "/!api/2%.0/repositories/[^/]+/[^/]+/commits/[^%?]*%?.+page=[0-9]+$")
       or string.match(url, "/!api/2%.0/repositories/[^/]+/[^/]+/commits%?.+page=[0-9]+$")
       or string.match(url, "/api/internal/repositories/[^/]+/[^/]+/src/")
+      or string.match(url, "/api/internal/repositories/[^/]+/[^/]+/conflicts/")
       or string.match(url, "/[^/]+/[^/]+/commits/[0-9a-f]+%??[^/]*$")
       or string.match(url, "/[^/]+/[^/]+/wiki/commits/[0-9a-f]+$")
       or string.match(url, "/[^/]+/[^/]+/src/[0-9a-zA-Z]+")
+      or string.match(url, "/[^/]+/[^/]+/branches/merge/")
+      or string.match(url, "/[^/]+/[^/]+/compare/")
       or string.match(url, "/[^/]+/[^/]+/issues%?.*sort=")
       or string.match(url, "/[^/]+/[^/]+/issues%?.*responsible=")
+      or string.match(url, "/[^/]+/[^/]+/downloads/%?tab=branches$")
       or string.match(url, "^https?://bitbucket%-connect%-icons%.s3%.amazonaws%.com/add%-on/icons/")
-      or string.match(url, "^https?://[^/]*bitbucket%.org/account/signin/") then
+      or string.match(url, "^https?://[^/]*bitbucket%.org/account/signin/")
+      and not (
+        string.match(url, "^https?://[^/]*bitbucket%.org/")
+        or string.match(url, "^https?://[^/]*bytebucket%.org/")
+        or string.match(url, "^https?://[^/]*amazonaws%.com/")
+      ) then
     return false
   end
 
@@ -84,7 +93,7 @@ allowed = function(url, parenturl)
 
   if parenturl ~= nil then
     local match = string.match(parenturl, "/downloads/%?tab=([a-zA-Z0-9]+)$")
-    if match ~= nil and (match == "tags" or match == "branches")
+    if match ~= nil and match == "tags"
       and (string.match(url, "/[^/]+/[^/]+/get/[^/]+%.zip$")
            or string.match(url, "/[^/]+/[^/]+/get/[^/]+%.tar%.gz$")) then
       return false
@@ -106,8 +115,10 @@ wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_pars
   local url = urlpos["url"]["url"]
   local html = urlpos["link_expect_html"]
 
-  if string.match(url, "[<>\\%*%$;%^%[%],%(%){}\"]") then
-    return false
+  if (downloaded[url] ~= true and addedtolist[url] ~= true)
+     and (allowed(url, parent["url"]) or html == 0) then
+    addedtolist[url] = true
+    return true
   end
   
   return false
