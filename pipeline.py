@@ -54,8 +54,9 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20200619.03'
-USER_AGENT = 'Archive Team'
+VERSION = '20200621.01'
+with open('user-agents', 'r') as f:
+    USER_AGENT = random.choice(f.read().splitlines()).strip()
 TRACKER_ID = 'bitbucket'
 TRACKER_HOST = 'trackerproxy.meo.ws'
 
