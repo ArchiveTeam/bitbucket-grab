@@ -77,6 +77,7 @@ allowed = function(url, parenturl)
       or string.match(url, "/[^/]+/[^/]+/issues%?.*kind=")
       or string.match(url, "/[^/]+/[^/]+/issues%?.*responsible=")
       or string.match(url, "/[^/]+/[^/]+/downloads/%?tab=branches$")
+      or string.match(url, "/[^/]+/[^/]+/downloads/%?tab=tags$")
       or string.match(url, "^https?://bitbucket%-connect%-icons%.s3%.amazonaws%.com/add%-on/icons/")
       or string.match(url, "^https?://[^/]*bitbucket%.org/account/signin/")
       or not (
