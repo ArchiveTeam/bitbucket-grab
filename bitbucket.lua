@@ -268,12 +268,12 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
       io.stdout:write("\nI give up...\n")
       io.stdout:flush()
       tries = 0
-      if allowed(url["url"], nil) then
-        io.open("BANNED", "w"):close()
-        return wget.actions.ABORT
-      else
+      --if allowed(url["url"], nil) then
+      --  io.open("BANNED", "w"):close()
+      --  return wget.actions.ABORT
+      --else
         return wget.actions.EXIT
-      end
+      --end
     else
       os.execute("sleep " .. math.floor(math.pow(2, tries)))
       tries = tries + 1

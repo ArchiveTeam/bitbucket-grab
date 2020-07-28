@@ -54,7 +54,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20200717.01'
+VERSION = '20200728.01'
 #with open('user-agents', 'r') as f:
 #    USER_AGENT = random.choice(f.read().splitlines()).strip()
 USER_AGENT = 'Archive Team 2'
